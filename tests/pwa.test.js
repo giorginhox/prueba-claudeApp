@@ -33,6 +33,11 @@ describe('iPhone', () => {
     assert.equal(manifest.display, 'standalone');
   });
 
+  it('usa la barra de la hora opaca para que no quede hueco abajo en iOS 26', () => {
+    // Con «black-translucent», iOS 26 dibuja la app más corta que la pantalla (WebKit 301108).
+    assert.match(html, /<meta name="apple-mobile-web-app-status-bar-style" content="black">/);
+  });
+
   it('respeta la zona de la cámara y la barra de abajo', () => {
     assert.match(html, /name="viewport" content="[^"]*viewport-fit=cover/);
     const css = read('css/app.css');

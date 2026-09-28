@@ -127,7 +127,7 @@ button {
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: calc(var(--safe-top) + 6px) var(--gutter-right) 12px var(--gutter-left);
+  padding: calc(var(--safe-top) + 10px) var(--gutter-right) 12px var(--gutter-left);
   background: var(--head);
   color: var(--on-head);
   --focus: #FFFFFF;

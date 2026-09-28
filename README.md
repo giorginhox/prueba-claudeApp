@@ -43,8 +43,11 @@ Control del material de la furgoneta, pensado para iPhone.
   **Copia de seguridad → Exportar** (guárdala en Archivos o mándatela). Con **Importar** la recuperas,
   también en un iPhone nuevo.
 - Cuando cambies algo de la app y lo publiques, el móvil recibe la versión nueva la próxima vez
-  que la abras con conexión. Lo único que iOS guarda al instalarla es el icono y la pantalla de
-  arranque: para que cambien, quita el icono y vuelve a añadirlo (exporta antes una copia).
+  que la abras con conexión. Lo único que iOS guarda al instalarla es el icono, la pantalla de
+  arranque y el estilo de la barra de la hora: para que cambien, quita el icono y vuelve a
+  añadirlo (exporta antes una copia).
+- La barra de la hora es negra a propósito: con la barra transparente, iOS 26 deja un hueco
+  vacío debajo de la app (es un fallo de Apple, no de la app).
 
 ## Para desarrolladores
 
