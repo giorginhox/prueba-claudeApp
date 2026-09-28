@@ -11,6 +11,8 @@ Control del material de la furgoneta, pensado para iPhone.
 - Toca el nombre de un material para **editarlo o borrarlo** (al borrar puedes deshacer).
 - Los datos se guardan **en el propio móvil** y funciona **sin cobertura**.
 - Modo oscuro automático.
+- Adaptada al **iPhone 15 Pro Max**: pantalla de arranque a su medida (también sirve para
+  14 Pro Max, 15 Plus y 16 Plus) y botones de + y − más grandes en los iPhone grandes.
 
 ## Publicarla con GitHub Pages
 
@@ -41,7 +43,8 @@ Control del material de la furgoneta, pensado para iPhone.
   **Copia de seguridad → Exportar** (guárdala en Archivos o mándatela). Con **Importar** la recuperas,
   también en un iPhone nuevo.
 - Cuando cambies algo de la app y lo publiques, el móvil recibe la versión nueva la próxima vez
-  que la abras con conexión.
+  que la abras con conexión. Lo único que iOS guarda al instalarla es el icono y la pantalla de
+  arranque: para que cambien, quita el icono y vuelve a añadirlo (exporta antes una copia).
 
 ## Para desarrolladores
 

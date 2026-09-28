@@ -811,3 +811,50 @@ button {
     animation: none;
   }
 }
+
+/* iPhone grandes (15 Pro Max, 15 Plus y demás «Max»): se aprovecha el ancho extra
+   para botones y números más grandes, más fáciles de acertar con guantes. */
+@media (min-width: 414px) {
+  .item {
+    min-height: 84px;
+    padding: 12px 10px 12px 14px;
+  }
+
+  .item__meta {
+    font-size: 0.94rem;
+  }
+
+  .stepper {
+    gap: 6px;
+  }
+
+  .step {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    font-size: 2.1rem;
+  }
+
+  .qty {
+    min-width: 54px;
+    font-size: 1.75rem;
+  }
+
+  .chip {
+    min-height: 44px;
+    font-size: 1rem;
+  }
+
+  .search__input {
+    height: 50px;
+  }
+
+  .button {
+    min-height: 60px;
+    font-size: 1.18rem;
+  }
+
+  .toast {
+    bottom: calc(var(--safe-bottom) + 92px);
+  }
+}

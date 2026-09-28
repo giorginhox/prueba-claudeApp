@@ -53,6 +53,14 @@ describe('iPhone', () => {
     assert.ok(hasColorType(href, [2]), 'iOS pinta de negro las zonas transparentes');
   });
 
+  it('tiene pantalla de arranque a la medida del iPhone 15 Pro Max', () => {
+    const [link] = tags('<link rel="apple-touch-startup-image"[^>]*>');
+    assert.ok(link, 'falta la pantalla de arranque');
+    assert.match(attr(link, 'media'), /device-width: 430px\) and \(device-height: 932px\) and \(-webkit-device-pixel-ratio: 3\)/);
+    // 430 × 932 puntos a 3 píxeles por punto.
+    assert.deepEqual(pngSize(attr(link, 'href')), { width: 1290, height: 2796 });
+  });
+
   it('tiene nombre corto bajo el icono', () => {
     assert.match(html, /<meta name="apple-mobile-web-app-title" content="Mi Furgo">/);
     assert.equal(manifest.short_name, 'Mi Furgo');

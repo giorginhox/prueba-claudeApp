@@ -2,7 +2,7 @@
 // Primero intenta la red (para recibir siempre la última versión) y, si no hay
 // conexión o tarda más de 3 segundos, usa la copia guardada.
 
-const CACHE = 'mi-furgo-v1';
+const CACHE = 'mi-furgo-v2';
 const APP_FILES = [
   './',
   './index.html',
@@ -17,6 +17,7 @@ const APP_FILES = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png',
+  './icons/splash-1290x2796.png',
 ];
 const NETWORK_TIMEOUT = 3000;
 
