@@ -34,6 +34,9 @@
   --font-round: ui-rounded, 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* Margen bajo el botón de añadir: se mete un poco en la zona de la barra de inicio
+     (queda a 28 px del borde en iPhone con Face ID) pero sin llegar a la raya. */
+  --dock-pad-bottom: max(10px, calc(var(--safe-bottom) - 6px));
   --gutter-left: max(16px, env(safe-area-inset-left, 0px));
   --gutter-right: max(16px, env(safe-area-inset-right, 0px));
 
@@ -559,7 +562,7 @@ button {
   bottom: 0;
   left: 0;
   z-index: 10;
-  padding: 10px var(--gutter-right) calc(var(--safe-bottom) + 10px) var(--gutter-left);
+  padding: 10px var(--gutter-right) var(--dock-pad-bottom) var(--gutter-left);
   border-top: 1px solid var(--line);
   background: var(--dock-bg);
   -webkit-backdrop-filter: blur(12px);
@@ -577,7 +580,7 @@ button {
 .toast {
   position: fixed;
   right: var(--gutter-right);
-  bottom: calc(var(--safe-bottom) + 88px);
+  bottom: calc(var(--dock-pad-bottom) + 87px);
   left: var(--gutter-left);
   z-index: 20;
   display: flex;
@@ -855,6 +858,6 @@ button {
   }
 
   .toast {
-    bottom: calc(var(--safe-bottom) + 92px);
+    bottom: calc(var(--dock-pad-bottom) + 91px);
   }
 }
