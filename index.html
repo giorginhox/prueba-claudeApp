@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0A3350">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Navega entre las islas Canarias esquivando rocas y olas y pesca caballas y viejas.">
+    <title>Travesía Canaria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module" src="js/main.js"></script>
+  </head>
+  <body>
+    <main class="stage" id="stage">
+      <canvas id="sea" class="sea" aria-label="El mar entre las islas, con tu barco"></canvas>
+
+      <header class="hud" id="hud" hidden>
+        <div class="hud__score">
+          <span class="hud__label">Puntos</span>
+          <output id="hud-score" aria-live="off">0</output>
+        </div>
+        <div class="hud__route">
+          <svg id="hud-map" class="route-map route-map--small" aria-hidden="true"></svg>
+          <p class="hud__leg">
+            <span class="hud__label">Rumbo a</span>
+            <span id="hud-destination" class="hud__destination">La Palma</span>
+            <span id="hud-miles" class="hud__miles">56 mn</span>
+          </p>
+        </div>
+        <div class="hud__side">
+          <div class="lives" id="hud-lives" role="img" aria-label="3 de 3 salvavidas"></div>
+          <button class="icon-button" id="btn-pause" type="button" aria-label="Pausa">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="banner" id="banner" role="status" aria-live="polite"></div>
+
+      <section class="screen screen--menu" id="screen-menu" aria-labelledby="menu-title">
+        <div class="menu">
+          <header class="menu__head">
+            <p class="eyebrow">De El Hierro a Lanzarote</p>
+            <h1 class="title" id="menu-title">Travesía Canaria</h1>
+          </header>
+          <svg id="menu-map" class="route-map route-map--big" role="img" aria-label="Ruta por las siete islas, de El Hierro a Lanzarote"></svg>
+          <fieldset class="levels" id="levels">
+            <legend>Estado del mar</legend>
+          </fieldset>
+          <button class="button button--primary" id="btn-start" type="button" data-autofocus>Zarpar</button>
+          <ul class="howto">
+            <li><b>Toca o arrastra</b> el dedo: el barco navega hacia donde tocas.</li>
+            <li><b>Esquiva</b> las rocas volcánicas y las olas. Cada choque cuesta un salvavidas.</li>
+            <li><b>Pesca</b> caballas (10) y viejas (25). Cada isla alcanzada suma 50. Todo se multiplica según el mar.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-pause" aria-labelledby="pause-title" hidden>
+        <div class="panel">
+          <h2 class="panel__title" id="pause-title">Al pairo</h2>
+          <p class="panel__text">El barco espera con las velas quietas.</p>
+          <div class="actions">
+            <button class="button button--primary" id="btn-resume" type="button" data-autofocus>Seguir navegando</button>
+            <button class="button button--ghost" id="btn-quit" type="button">Volver al menú</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-over" aria-labelledby="over-title" hidden>
+        <div class="panel">
+          <p class="eyebrow eyebrow--ink" id="over-kicker">Naufragio</p>
+          <h2 class="panel__title" id="over-title">¡A pique!</h2>
+          <p class="final-score"><output id="over-score">0</output> <span>puntos</span></p>
+          <p class="badge" id="over-new" hidden>¡Nuevo récord!</p>
+          <p class="record-line" id="over-record">Récord: 0</p>
+          <dl class="stats">
+            <div><dt>Peces</dt><dd id="over-fish">0</dd></div>
+            <div><dt>Islas</dt><dd id="over-islands">0</dd></div>
+            <div><dt>Millas</dt><dd id="over-miles">0</dd></div>
+          </dl>
+          <div class="actions">
+            <button class="button button--primary" id="btn-retry" type="button" data-autofocus>Otra travesía</button>
+            <button class="button button--ghost" id="btn-menu" type="button">Menú</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,621 @@
+/* Travesía Canaria — un solo aspecto a propósito: el Atlántico de día, con los colores
+   de la bandera canaria (blanco, azul y amarillo) y el rojo de los salvavidas. */
+
+:root {
+  --abismo: #072438;
+  --atlantico: #0A3350;
+  --espuma: #F3F7F4;
+  --espuma-suave: rgba(243, 247, 244, 0.78);
+  --canario: #FFC62E;
+  --canario-sombra: #C8920B;
+  --franja: #1C5FA8;
+  --coral: #E5533D;
+  --tinta: #0B2236;
+  --tinta-suave: #4A6275;
+  --velo: rgba(10, 51, 80, 0.58);
+  --foco: var(--canario);
+
+  --font-display: 'Alfa Slab One', Rockwell, 'Roboto Slab', Georgia, serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--abismo);
+  color: var(--espuma);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 3px;
+}
+
+/* ---------- Escenario ---------- */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  max-width: 520px;
+  margin-inline: auto;
+  overflow: hidden;
+  background: var(--atlantico);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.45);
+}
+
+.sea {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+/* ---------- Marcador ---------- */
+
+.hud {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 8px;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 12px 0;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(4, 20, 34, 0.7);
+}
+
+.hud__label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--espuma-suave);
+}
+
+.hud__score output {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud__route {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  width: 150px;
+  padding: 6px 8px 5px;
+  border-radius: 12px;
+  background: var(--velo);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.hud__leg {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0 6px;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.hud__leg .hud__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.hud__destination {
+  font-weight: 700;
+}
+
+.hud__miles {
+  color: var(--canario);
+  font-variant-numeric: tabular-nums;
+}
+
+.hud__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.lives {
+  display: flex;
+  gap: 4px;
+}
+
+/* Salvavidas: aro rojo y blanco. */
+.ring {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--coral) 0 12.5%,
+    var(--espuma) 0 37.5%,
+    var(--coral) 0 62.5%,
+    var(--espuma) 0 87.5%,
+    var(--coral) 0
+  );
+  -webkit-mask: radial-gradient(circle, transparent 36%, #000 39%);
+  mask: radial-gradient(circle, transparent 36%, #000 39%);
+  filter: drop-shadow(0 1px 1px rgba(4, 20, 34, 0.6));
+}
+
+.ring--lost {
+  opacity: 0.28;
+  filter: grayscale(1);
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: var(--velo);
+  pointer-events: auto;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.icon-button svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--espuma);
+}
+
+/* ---------- Mapa de la ruta ---------- */
+
+.route-map {
+  display: block;
+  overflow: visible;
+}
+
+.route-map--small {
+  width: 128px;
+  height: auto;
+}
+
+.route-map--big {
+  width: 100%;
+  height: auto;
+}
+
+.route-map__line {
+  fill: none;
+  stroke: var(--espuma);
+  stroke-opacity: 0.55;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.route-map__island {
+  fill: #C9B98E;
+  stroke: var(--espuma);
+  stroke-opacity: 0.5;
+  stroke-width: 1.5;
+}
+
+.route-map__island.is-current {
+  fill: var(--espuma);
+}
+
+.route-map__island.is-target {
+  fill: var(--canario);
+  stroke: var(--espuma);
+  stroke-opacity: 1;
+  stroke-width: 3;
+}
+
+.route-map__boat {
+  fill: var(--canario);
+  stroke: var(--tinta);
+  stroke-width: 3;
+}
+
+.route-map__label {
+  fill: var(--espuma);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Aviso de isla alcanzada ---------- */
+
+.banner {
+  position: absolute;
+  inset: 24% 16px auto;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  text-shadow: 0 2px 6px rgba(4, 20, 34, 0.7);
+}
+
+.banner strong {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 10vw, 2.7rem);
+  font-weight: 400;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.banner span {
+  color: var(--canario);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.banner.is-visible {
+  animation: banner 2.2s ease-out both;
+}
+
+@keyframes banner {
+  0% { opacity: 0; transform: translateY(12px); }
+  12% { opacity: 1; transform: none; }
+  78% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-8px); }
+}
+
+/* ---------- Pantallas ---------- */
+
+.screen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  overflow-y: auto;
+  padding: calc(env(safe-area-inset-top, 0px) + 20px) 16px calc(env(safe-area-inset-bottom, 0px) + 20px);
+  background: linear-gradient(180deg, rgba(7, 36, 56, 0.35), rgba(7, 36, 56, 0.82));
+  touch-action: pan-y;
+  animation: fade-in 0.25s ease-out both;
+}
+
+.screen > * {
+  margin: auto;
+}
+
+.screen--menu {
+  background: linear-gradient(180deg, rgba(7, 36, 56, 0.15) 0%, rgba(7, 36, 56, 0.55) 40%, rgba(7, 36, 56, 0.88) 100%);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: min(100%, 400px);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--canario);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eyebrow--ink {
+  color: var(--franja);
+}
+
+.title {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 14vw, 3.7rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  text-shadow: 0 3px 0 var(--franja), 0 6px 18px rgba(4, 20, 34, 0.5);
+}
+
+.levels {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.levels legend {
+  margin-bottom: 8px;
+  padding: 0;
+  color: var(--espuma-suave);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.level {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'name record'
+    'sea meta';
+  align-items: baseline;
+  gap: 0 12px;
+  padding: 10px 14px;
+  border: 1.5px solid rgba(243, 247, 244, 0.28);
+  border-radius: 12px;
+  background: rgba(243, 247, 244, 0.07);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.level input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.level:has(input:focus-visible) {
+  outline: 3px solid var(--foco);
+  outline-offset: 3px;
+}
+
+.level:has(input:checked) {
+  border-color: var(--espuma);
+  background: var(--espuma);
+  color: var(--tinta);
+}
+
+.level__name {
+  grid-area: name;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+.level__sea {
+  grid-area: sea;
+  font-size: 0.85rem;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.level__meta {
+  grid-area: meta;
+  justify-self: end;
+  font-size: 0.78rem;
+  opacity: 0.8;
+}
+
+.level__record {
+  grid-area: record;
+  justify-self: end;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.level__record b {
+  color: var(--canario);
+}
+
+.level:has(input:checked) .level__record b {
+  color: var(--franja);
+}
+
+.button {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 14px;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+
+.button--primary {
+  background: var(--canario);
+  color: var(--tinta);
+  box-shadow: 0 4px 0 var(--canario-sombra);
+}
+
+.button--primary:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--canario-sombra);
+}
+
+.button--ghost {
+  border: 2px solid currentColor;
+  background: transparent;
+  font-size: 1.05rem;
+}
+
+.howto {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--espuma-suave);
+  font-size: 0.88rem;
+}
+
+.howto b {
+  color: var(--espuma);
+}
+
+.panel {
+  --foco: var(--franja);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(100%, 360px);
+  padding: 26px 22px 22px;
+  border-radius: 18px;
+  background: var(--espuma);
+  color: var(--tinta);
+  text-align: center;
+  box-shadow: 0 18px 44px rgba(3, 20, 33, 0.5);
+}
+
+.panel__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.panel__text {
+  margin: 0;
+  color: var(--tinta-suave);
+}
+
+.final-score {
+  margin: 4px 0 0;
+  color: var(--franja);
+}
+
+.final-score output {
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.final-score span {
+  display: block;
+  color: var(--tinta-suave);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.badge {
+  align-self: center;
+  margin: 0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--canario);
+  color: var(--tinta);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  animation: pop 0.5s 0.2s cubic-bezier(0.3, 1.6, 0.6, 1) both;
+}
+
+@keyframes pop {
+  from { transform: scale(0.4); opacity: 0; }
+}
+
+.record-line {
+  margin: 0;
+  color: var(--tinta-suave);
+  font-variant-numeric: tabular-nums;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 4px 0;
+  padding: 12px 0;
+  border-block: 1px solid rgba(11, 34, 54, 0.15);
+}
+
+.stats dt {
+  color: var(--tinta-suave);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.stats dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen,
+  .badge {
+    animation: none;
+  }
+
+  .banner.is-visible {
+    animation-name: banner-still;
+  }
+
+  @keyframes banner-still {
+    0%, 100% { opacity: 0; }
+    10%, 85% { opacity: 1; }
+  }
+}

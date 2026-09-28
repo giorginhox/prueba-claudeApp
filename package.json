@@ -1,0 +1,14 @@
+{
+  "name": "travesia-canaria",
+  "version": "1.0.0",
+  "description": "Juego web para móvil: navega entre las islas Canarias esquivando rocas y olas y pesca para sumar puntos.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npx --yes serve .",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
