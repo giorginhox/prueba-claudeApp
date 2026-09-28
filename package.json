@@ -1,7 +1,7 @@
 {
-  "name": "travesia-canaria",
+  "name": "mi-furgo",
   "version": "1.0.0",
-  "description": "Juego web para móvil: navega entre las islas Canarias esquivando rocas y olas y pesca para sumar puntos.",
+  "description": "Mi Furgo: control del material de la furgoneta. App web instalable para iPhone.",
   "private": true,
   "type": "module",
   "scripts": {

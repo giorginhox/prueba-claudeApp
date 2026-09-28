@@ -3,93 +3,108 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#0A3350">
-    <meta name="mobile-web-app-capable" content="yes">
+    <title>Mi Furgo</title>
+    <meta name="description" content="Control del material de la furgoneta.">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#1A66D2" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0F2544" media="(prefers-color-scheme: dark)">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- iPhone: pantalla completa al abrirla desde la pantalla de inicio -->
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Mi Furgo">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="Navega entre las islas Canarias esquivando rocas y olas y pesca caballas y viejas.">
-    <title>Travesía Canaria</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
-    <link rel="stylesheet" href="css/styles.css">
-    <script type="module" src="js/main.js"></script>
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+    <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="stylesheet" href="css/app.css">
+    <script type="module" src="js/app.js"></script>
   </head>
   <body>
-    <main class="stage" id="stage">
-      <canvas id="sea" class="sea" aria-label="El mar entre las islas, con tu barco"></canvas>
+    <header class="top">
+      <div class="top__bar">
+        <h1 class="brand">
+          <svg class="brand__van" viewBox="80 160 352 240" aria-hidden="true">
+            <path d="M88 196Q88 168 116 168L292 168Q310 168 322 182L378 248L404 258Q424 266 424 288L424 336Q424 356 404 356L108 356Q88 356 88 336Z"/>
+            <circle cx="160" cy="356" r="34"/>
+            <circle cx="352" cy="356" r="34"/>
+          </svg>
+          Mi Furgo
+        </h1>
+        <button class="alert-pill" id="low-pill" type="button" hidden></button>
+      </div>
+      <form class="search" id="search-form" role="search">
+        <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 20 20"/></svg>
+        <label class="visually-hidden" for="search">Buscar material</label>
+        <input id="search" class="search__input" type="search" placeholder="Buscar material" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search">
+      </form>
+    </header>
 
-      <header class="hud" id="hud" hidden>
-        <div class="hud__score">
-          <span class="hud__label">Puntos</span>
-          <output id="hud-score" aria-live="off">0</output>
-        </div>
-        <div class="hud__route">
-          <svg id="hud-map" class="route-map route-map--small" aria-hidden="true"></svg>
-          <p class="hud__leg">
-            <span class="hud__label">Rumbo a</span>
-            <span id="hud-destination" class="hud__destination">La Palma</span>
-            <span id="hud-miles" class="hud__miles">56 mn</span>
-          </p>
-        </div>
-        <div class="hud__side">
-          <div class="lives" id="hud-lives" role="img" aria-label="3 de 3 salvavidas"></div>
-          <button class="icon-button" id="btn-pause" type="button" aria-label="Pausa">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>
-          </button>
-        </div>
-      </header>
+    <nav class="filters" id="filters" aria-label="Filtrar por categoría"></nav>
 
-      <div class="banner" id="banner" role="status" aria-live="polite"></div>
+    <main class="content" id="content" aria-live="polite"></main>
 
-      <section class="screen screen--menu" id="screen-menu" aria-labelledby="menu-title">
-        <div class="menu">
-          <header class="menu__head">
-            <p class="eyebrow">De El Hierro a Lanzarote</p>
-            <h1 class="title" id="menu-title">Travesía Canaria</h1>
-          </header>
-          <svg id="menu-map" class="route-map route-map--big" role="img" aria-label="Ruta por las siete islas, de El Hierro a Lanzarote"></svg>
-          <fieldset class="levels" id="levels">
-            <legend>Estado del mar</legend>
+    <footer class="dock">
+      <button class="button button--primary button--add" id="add-button" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Añadir material
+      </button>
+    </footer>
+
+    <div class="toast" id="toast" role="status" hidden>
+      <span class="toast__text" id="toast-text"></span>
+      <button class="toast__action" id="toast-action" type="button" hidden></button>
+    </div>
+
+    <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+      <form class="sheet__panel" id="item-form" novalidate>
+        <div class="sheet__bar">
+          <button class="bar-button" type="button" data-close>Cancelar</button>
+          <h2 class="sheet__title" id="sheet-title">Nuevo material</h2>
+          <button class="bar-button bar-button--strong" type="submit">Guardar</button>
+        </div>
+
+        <div class="sheet__body">
+          <div class="field">
+            <label class="field__label" for="f-name">Nombre</label>
+            <input class="field__input" id="f-name" name="name" type="text" maxlength="60" autocomplete="off" autocapitalize="sentences" enterkeyhint="done" placeholder="Ej.: Tubo multicapa 16" aria-describedby="f-name-error">
+            <p class="field__error" id="f-name-error" hidden></p>
+          </div>
+
+          <fieldset class="field">
+            <legend class="field__label">Categoría</legend>
+            <div class="choices" id="f-categories"></div>
+            <p class="field__error" id="f-category-error" hidden></p>
           </fieldset>
-          <button class="button button--primary" id="btn-start" type="button" data-autofocus>Zarpar</button>
-          <ul class="howto">
-            <li><b>Toca o arrastra</b> el dedo: el barco navega hacia donde tocas.</li>
-            <li><b>Esquiva</b> las rocas volcánicas y las olas. Cada choque cuesta un salvavidas.</li>
-            <li><b>Pesca</b> caballas (10) y viejas (25). Cada isla alcanzada suma 50. Todo se multiplica según el mar.</li>
-          </ul>
-        </div>
-      </section>
 
-      <section class="screen" id="screen-pause" aria-labelledby="pause-title" hidden>
-        <div class="panel">
-          <h2 class="panel__title" id="pause-title">Al pairo</h2>
-          <p class="panel__text">El barco espera con las velas quietas.</p>
-          <div class="actions">
-            <button class="button button--primary" id="btn-resume" type="button" data-autofocus>Seguir navegando</button>
-            <button class="button button--ghost" id="btn-quit" type="button">Volver al menú</button>
+          <div class="field">
+            <label class="field__label" for="f-quantity">Cantidad</label>
+            <div class="stepper stepper--form">
+              <button class="step" type="button" data-target="f-quantity" data-delta="-1" aria-label="Restar uno a la cantidad">−</button>
+              <input class="stepper__input" id="f-quantity" name="quantity" type="text" inputmode="numeric" pattern="[0-9]*" value="0">
+              <button class="step" type="button" data-target="f-quantity" data-delta="1" aria-label="Sumar uno a la cantidad">+</button>
+            </div>
           </div>
-        </div>
-      </section>
 
-      <section class="screen" id="screen-over" aria-labelledby="over-title" hidden>
-        <div class="panel">
-          <p class="eyebrow eyebrow--ink" id="over-kicker">Naufragio</p>
-          <h2 class="panel__title" id="over-title">¡A pique!</h2>
-          <p class="final-score"><output id="over-score">0</output> <span>puntos</span></p>
-          <p class="badge" id="over-new" hidden>¡Nuevo récord!</p>
-          <p class="record-line" id="over-record">Récord: 0</p>
-          <dl class="stats">
-            <div><dt>Peces</dt><dd id="over-fish">0</dd></div>
-            <div><dt>Islas</dt><dd id="over-islands">0</dd></div>
-            <div><dt>Millas</dt><dd id="over-miles">0</dd></div>
-          </dl>
-          <div class="actions">
-            <button class="button button--primary" id="btn-retry" type="button" data-autofocus>Otra travesía</button>
-            <button class="button button--ghost" id="btn-menu" type="button">Menú</button>
+          <div class="field">
+            <label class="field__label" for="f-min">Mínimo</label>
+            <div class="stepper stepper--form">
+              <button class="step" type="button" data-target="f-min" data-delta="-1" aria-label="Restar uno al mínimo">−</button>
+              <input class="stepper__input" id="f-min" name="min" type="text" inputmode="numeric" pattern="[0-9]*" value="0" aria-describedby="f-min-help">
+              <button class="step" type="button" data-target="f-min" data-delta="1" aria-label="Sumar uno al mínimo">+</button>
+            </div>
+            <p class="field__help" id="f-min-help">Se pone en rojo cuando la cantidad baja de este número. Con 0 no avisa nunca.</p>
           </div>
+
+          <button class="button button--primary" type="submit">Guardar</button>
+          <button class="button button--danger" id="delete-button" type="button" hidden>Borrar material</button>
         </div>
-      </section>
-    </main>
+      </form>
+    </dialog>
+
+    <input id="import-file" type="file" accept="application/json,.json" hidden>
   </body>
 </html>

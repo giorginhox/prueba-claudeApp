@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="fondo" x1="0" y1="0" x2="0" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2E7BE8"/>
+      <stop offset="1" stop-color="#1557BF"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#fondo)"/>
+  <g transform="translate(0 -24)">
+    <!-- Carrocería -->
+    <path fill="#FFFFFF" d="M88 196Q88 168 116 168L292 168Q310 168 322 182L378 248L404 258Q424 266 424 288L424 336Q424 356 404 356L108 356Q88 356 88 336Z"/>
+    <!-- Ventanilla de la cabina -->
+    <path fill="#1557BF" d="M262 190L304 190Q313 190 319 197L356 241Q362 250 351 250L262 250Q254 250 254 242L254 198Q254 190 262 190Z"/>
+    <!-- Puerta lateral y faro -->
+    <path fill="none" stroke="#C9D8EE" stroke-width="5" stroke-linecap="round" d="M238 188L238 332"/>
+    <rect x="212" y="266" width="18" height="7" rx="3.5" fill="#C9D8EE"/>
+    <rect x="408" y="272" width="16" height="14" rx="5" fill="#FFC83D"/>
+    <!-- Ruedas -->
+    <circle cx="160" cy="356" r="38" fill="#0B2A55" stroke="url(#fondo)" stroke-width="12"/>
+    <circle cx="160" cy="356" r="13" fill="#E8EEF7"/>
+    <circle cx="352" cy="356" r="38" fill="#0B2A55" stroke="url(#fondo)" stroke-width="12"/>
+    <circle cx="352" cy="356" r="13" fill="#E8EEF7"/>
+  </g>
+</svg>
